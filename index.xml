@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Jhy's Blog</title><link>https://example.com/</link><description>Recent content on Jhy's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 22 Jul 2026 16:36:29 +0800</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Hello World</title><link>https://example.com/posts/hello-world/</link><pubDate>Wed, 22 Jul 2026 16:36:29 +0800</pubDate><guid>https://example.com/posts/hello-world/</guid><description>&lt;h1 id="hello-hugo"&gt;Hello Hugo!&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;实迷途其未远，觉今是而昨非。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;测试文章&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(&lt;span style="color:#e6db74"&gt;&amp;#34;hello world&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>
