@@ -26,3 +26,61 @@ html.dark #background-canvas {
 html.dark #background-canvas > div {
   background-color: rgba(20, 8, 6, 0.55);
 }
+
+/* ===== Strip the header chrome entirely =====
+   The fixed-gradient layout adds two layers on top of the background:
+   (1) a permanent gradient strip (the "from-neutral-800" bar) and
+   (2) a #menu-blur div that ramps up a 40px backdrop-blur + heavy
+   shadow on scroll. Both muddy the fire ball and the paper. Remove
+   them so the background reads cleanly through the header. */
+.fixed.top-0.inset-x-0.bg-gradient-to-b {
+  background-image: none !important;
+  opacity: 0 !important;
+}
+#menu-blur {
+  display: none !important;
+  opacity: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ===== Floating card menu =====
+   Centered rounded pill/card that floats with breathing room. Solid
+   (not blurred, not gradient) background so menu text stays readable
+   over scrolling content. Width is responsive: nearly full on mobile,
+   progressively more compact up to a desktop cap. */
+header > .fixed.top-0.inset-x-0.z-100 {
+  background-color: #f0e8d5;       /* paper, slightly deeper than body */
+  border-radius: 0.75rem;          /* 12px rounded card */
+  top: 0.75rem;                    /* float with 12px top margin */
+  left: 50%;                       /* center horizontally */
+  right: auto;
+  bottom: auto;
+  transform: translateX(-50%);     /* ...shift back by half its own width */
+  /* Mobile (<768px): nearly full width, side margins only */
+  width: calc(100% - 1.5rem);
+  max-width: 32rem;                /* hard cap at 512px on mobile */
+}
+html.dark header > .fixed.top-0.inset-x-0.z-100 {
+  background-color: #1a0808;       /* warm dark, matches fire background */
+}
+/* Tablet (md, 768px+): wider but still constrained */
+@media (min-width: 768px) {
+  header > .fixed.top-0.inset-x-0.z-100 {
+    max-width: 42rem;              /* 672px */
+  }
+}
+/* Desktop (lg, 1024px+): full intended cap */
+@media (min-width: 1024px) {
+  header > .fixed.top-0.inset-x-0.z-100 {
+    max-width: 60rem;              /* 960px */
+  }
+}
+
+/* Trim the static header spacer so body content doesn't sit too far
+   below the now-floating card. The card occupies top 0.75rem + ~3rem
+   height + 0.75rem margin, so 5rem is plenty. */
+header > div.min-h-\[148px\] {
+  min-height: 5rem;
+}
