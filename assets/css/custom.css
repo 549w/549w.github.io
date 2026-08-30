@@ -1,0 +1,28 @@
+/* -----------------------------------------------------------------------
+ * Custom overrides for the Blowfish theme.
+ * Loaded automatically after the compiled main.css.
+ * ----------------------------------------------------------------------- */
+
+/* ===== Light mode: paper-book pages, no animation =====
+   Hide the animated background canvas entirely, and give the body a
+   warm cream like an old book page. We bump specificity by also
+   targeting the .bg-neutral class the theme applies to <body> so the
+   paper color wins over the theme's neutral gray. */
+#background-canvas {
+  display: none !important;
+}
+body.bg-neutral {
+  background-color: #faf3e0; /* fresh book-page cream */
+  font-size: 1rem;          /* 16px — bring body from text-lg (18px) down to text-base */
+}
+
+/* ===== Dark mode: keep the fire ball, gently warmed overlay =====
+   Re-enable the canvas (in case some other rule hid it) and replace
+   the theme's neutral 60% gray with a warm near-black at 55% so the
+   fire gradient reads as "ember on dark paper" rather than washed out. */
+html.dark #background-canvas {
+  display: block !important;
+}
+html.dark #background-canvas > div {
+  background-color: rgba(20, 8, 6, 0.55);
+}
