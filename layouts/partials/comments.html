@@ -1,10 +1,21 @@
 {{/*
   Comments partial — giscus
   Backed by GitHub Discussions on the 549w/549w.github.io repo.
-  Configured at https://giscus.app/ — update the data-* attrs here
-  if you re-generate the script there.
+  Configured at https://giscus.app/ — update the data-* attrs on the
+  placeholder below if you re-generate the script there.
+
+  How this works:
+    1. A <script type="text/plain"> placeholder sits in this partial's
+       normal DOM position. The browser does NOT execute it (text/plain).
+    2. The inline <script> below reads its data-* attributes, sets the
+       correct data-theme from the current site mode, then replaceWith()
+       the placeholder with a real <script src="giscus.app/client.js">.
+       Because replaceWith keeps DOM position, giscus injects the iframe
+       HERE, not at the end of <body>.
+    3. The same inline script sets up listeners so toggling the site
+       theme also updates the giscus iframe via postMessage.
 */}}
-<script src="https://giscus.app/client.js"
+<script type="text/plain" id="giscus-embed"
         data-repo="549w/549w.github.io"
         data-repo-id="R_kgDOTf90GQ"
         data-category="Announcements"
@@ -14,9 +25,62 @@
         data-reactions-enabled="1"
         data-emit-metadata="1"
         data-input-position="top"
-        data-theme="preferred_color_scheme"
+        data-theme="placeholder"
         data-lang="zh-CN"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
+        data-loading="lazy">
+</script>
+
+<script>
+  (function () {
+    // Map site light/dark → giscus theme names. Change these to any
+    // giscus-supported theme (light / dark / noborder_* / etc.).
+    const THEMES = { light: "noborder_light", dark: "noborder_dark" };
+
+    function currentTheme() {
+      return document.documentElement.classList.contains("dark")
+        ? THEMES.dark
+        : THEMES.light;
+    }
+
+    function syncGiscus() {
+      const iframe = document.querySelector("iframe.giscus-frame");
+      if (!iframe || !iframe.contentWindow) return;
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: currentTheme() } } },
+        "https://giscus.app"
+      );
+    }
+
+    // (1) Catch giscus's "ready" postMessage and apply the current theme.
+    // Listener is attached before we swap the placeholder, so we never
+    // miss the ready event.
+    window.addEventListener("message", function (e) {
+      if (e.origin !== "https://giscus.app") return;
+      if (e.data && e.data.giscus && e.data.giscus.ready) syncGiscus();
+    });
+
+    // (2) Keep giscus in sync when the user toggles the site theme.
+    new MutationObserver(syncGiscus).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // (3) Replace the text/plain placeholder with a real <script> that
+    // points at giscus, copying its data-* attrs and overriding
+    // data-theme to match the current site mode (so there's no flash
+    // of the wrong theme on initial load).
+    const placeholder = document.getElementById("giscus-embed");
+    if (!placeholder) return;
+
+    const real = document.createElement("script");
+    real.src = "https://giscus.app/client.js";
+    real.async = true;
+    real.crossOrigin = "anonymous";
+    for (const attr of placeholder.attributes) {
+      if (attr.name === "id") continue;
+      real.setAttribute(attr.name, attr.value);
+    }
+    real.setAttribute("data-theme", currentTheme());
+    placeholder.replaceWith(real);
+  })();
 </script>
