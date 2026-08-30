@@ -3,6 +3,7 @@ showTitle = false
 showDate = false
 showReadingTime = false
 showWordCount = false
+showComments = false
 +++
 
 # Hi, I'm JHY 👋
