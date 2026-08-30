@@ -1,9 +1,9 @@
 # config/_default/languages.zh-cn.toml
 
-title = "JHY"
+title = "Hi, I'm JHY"
 
 [params.author]
-name = "JHY"
+name = "Hongyu Jiang"
 image = "img/author.jpg"
 headline = "Undergraduate, Software Instisude, NJU"
 bio = "实迷途其未远，觉今是而昨非。"
