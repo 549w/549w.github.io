@@ -1,9 +1,9 @@
 ---
-title: "Projects"
+title: "Moments"
 
 cascade:
-  showDate: false
+  showDate: true
   showReadingTime: false
   showAuthor: false
-  layout: "projects"
+  layout: "moments"
 ---
