@@ -2,6 +2,6 @@
 title: "Emotion Agent"
 description: "情绪疏导 Agent"
 
-showDate: true
+showDate: false
 showReadingTime: false
 ---

@@ -2,6 +2,7 @@
 title: "Projects"
 
 cascade:
+  showWordCount: false
   showReadingTime: false
   showAuthor: false
   groupbyyear: false
