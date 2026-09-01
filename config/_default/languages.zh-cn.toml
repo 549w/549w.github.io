@@ -2,6 +2,9 @@
 
 title = "Hi, I'm JHY"
 
+[params]
+dateFormat = "2006-01-02"
+
 [params.author]
 name = "Hongyu Jiang"
 image = "img/author.jpg"

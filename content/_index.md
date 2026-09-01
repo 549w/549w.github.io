@@ -1,0 +1,4 @@
+---
+showDate: true
+showReadingTime: false
+---

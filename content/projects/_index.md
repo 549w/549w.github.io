@@ -2,7 +2,6 @@
 title: "Projects"
 
 cascade:
-  showDate: false
   showReadingTime: false
   showAuthor: false
   groupbyyear: false
