@@ -17,7 +17,7 @@ enableStructuredBreadcrumbs = true
 
 replyByEmail = false
 
-# mainSections = ["section1", "section2"]
+mainSections = ["moments", "writings", "projects"]
 # robots = ""
 
 disableImageOptimization = false
@@ -66,10 +66,10 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
 [homepage]
   layout = "profile" # valid options: page, profile, hero, card, background, custom
   #homepageImage = "IMAGE.jpg" # used in: hero, and card
-  showRecent = false
+  showRecent = true
   showRecentItems = 5
   showMoreLink = false
-  showMoreLinkDest = "/posts/"
+  showMoreLinkDest = "/writings/"
   cardView = true
   cardViewScreenWidth = false
   layoutBackgroundBlur = false # only used when layout equals background
@@ -102,7 +102,7 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
   # showRelatedContent = false
   # relatedContentLimit = 3
   showTaxonomies = true # Enable the display of taxonomies for the related article.
-  showCategories = false # These will show if showTaxonomies is true.
+  showCategories = true # These will show if showTaxonomies is true.
   showTags = true # These will show if showTaxonomies is true.
   showCategoriesInSecondaryColor = false # This will change the color of category badges, so the user can better distinguish between the two. Only if showTaxonomies is true.
   showAuthorsBadges = false

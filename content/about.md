@@ -16,13 +16,10 @@ Enjoy turning ideas into reality, bringing people together, and building things 
 
 - AI for Software Engineering (AI4SE)
 - The intersection of AI and psychology
-- Quantitative research and data-driven decision making
 
 ## Beyond Code
 
 Care the **taste** behind great products.
-
-Enjoy films, novels, and reading about philosophy and sociology.
 
 ## Contact me
 
