@@ -1,30 +1,28 @@
-/* -----------------------------------------------------------------------
- * Custom overrides for the Blowfish theme (basic header layout).
- * Loaded automatically after the compiled main.css.
- * ----------------------------------------------------------------------- */
+/* -----------------------------------------------------------------------------
+ * Blowfish 主题自定义样式
+ * 通过提高选择器优先级覆盖主题样式，避免使用 !important
+ * 注意：使用 background 首页布局时，不要隐藏 #background-canvas
+ * --------------------------------------------------------------------------- */
 
-/* ===== Light mode: paper-book pages, no animation =====
-   Hide the animated background canvas entirely, and give the body a
-   warm cream like an old book page. We bump specificity by also
-   targeting the .bg-neutral class the theme applies to <body> so the
-   paper color wins over the theme's neutral gray. */
-#background-canvas {
-  display: none !important;
-}
-body.bg-neutral {
-  background-color: #faf3e0; /* fresh book-page cream */
-  font-size: 1rem;          /* 16px — bring body from text-lg (18px) down to text-base */
+/* ===== 浅色模式：旧书页暖色背景 =====
+ * 保留背景 canvas，使用奶油色背景
+ */
+html:not(.dark) body.bg-neutral {
+  background-color: #faf3e0; /* 旧书页奶油色 */
+  font-size: 1rem; /* 16px，从 text-lg (18px) 调整为 text-base */
 }
 
-/* ===== Dark mode: keep the fire ball, gently warmed overlay =====
-   Re-enable the canvas (in case some other rule hid it) and replace
-   the theme's neutral 60% gray with a warm near-black at 55% so the
-   fire gradient reads as "ember on dark paper" rather than washed out. */
-html.dark #background-canvas {
-  display: block !important;
-}
+/* ===== 深色模式：温暖覆盖层 =====
+ * 用温暖深色覆盖层，营造 ember on dark paper 效果
+ */
 html.dark #background-canvas > div {
-  background-color: rgba(20, 8, 6, 0.55);
+  background-color: rgba(20, 8, 6, 0.55); /* 温暖的深色覆盖 */
 }
 
+html.dark #background {
+  background-color: #1a1a1a; /* 深色背景 */
+}
 
+html.dark #background-overlay {
+  opacity: 0.85; /* 覆盖层透明度 */
+}
