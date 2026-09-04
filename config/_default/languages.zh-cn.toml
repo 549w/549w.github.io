@@ -8,7 +8,7 @@ dateFormat = "2006-01-02"
 [params.author]
 name = "Hongyu Jiang"
 image = "img/author.jpg"
-headline = "Undergraduate, Software Instisude, NanJing University"
+headline = "Undergraduate, Software Instisude, Nanjing University"
 email = "hi@imjhy.com"
 bio = "实迷途其未远，觉今是而昨非。"
 links = [
