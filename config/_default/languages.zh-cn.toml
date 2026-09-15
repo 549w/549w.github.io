@@ -1,6 +1,6 @@
 # config/_default/languages.zh-cn.toml
 
-title = "Hi, I'm JHY"
+title = "JHY's Blog"
 
 [params]
 dateFormat = "2006-01-02"
