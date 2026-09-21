@@ -7,5 +7,3 @@ cascade:
   showAuthor: false
   layout: "gallary"
 ---
-
-一张图，或是几句话。
