@@ -7,4 +7,4 @@ showWordCount = false
 showComments = false
 +++
 
-如题。欢迎交换友链！
+欢迎交换友链～

@@ -17,7 +17,7 @@ enableStyledScrollbar = true # 美化滚动条样式
 
 replyByEmail = false
 
-mainSections = ["short", "long"]
+mainSections = ["posts", "notes", "gallary"]
 # robots = ""
 
 disableImageOptimization = false
@@ -96,7 +96,7 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
   showHeadingAnchors = true
   showPagination = true
   invertPagination = true
-  showReadingTime = true
+  showReadingTime = false
   showTableOfContents = true
   showComments = true
   # showRelatedContent = false
@@ -106,7 +106,7 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
   showTags = true # These will show if showTaxonomies is true.
   showCategoriesInSecondaryColor = false # This will change the color of category badges, so the user can better distinguish between the two. Only if showTaxonomies is true.
   showAuthorsBadges = false
-  showWordCount = true
+  showWordCount = false
   # sharingLinks = [ "linkedin", "twitter", "bluesky", "mastodon", "reddit", "pinterest", "facebook", "email", "whatsapp", "telegram", "line"]
   showZenMode = true
   # externalLinkForceNewTab = false # disable to allow external links in the same tab (defaults to true)

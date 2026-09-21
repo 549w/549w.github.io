@@ -11,14 +11,24 @@
 # ordered by weight from lowest to highest.
 
 [[main]]
-  name = "短的"
-  pageRef = "short"
+  name = "Posts"
+  pageRef = "posts"
   weight = 10
 
 [[main]]
-  name = "长的"
-  pageRef = "long"
+  name = "Gallary"
+  pageRef = "gallary"
   weight = 20
+
+[[main]]
+  name = "Notes"
+  pageRef = "notes"
+  weight = 30
+
+[[main]]
+  name = "Projects"
+  pageRef = "projects"
+  weight = 40
 
 #[[main]]
 #  name = "example sub-menu 1"
