@@ -17,7 +17,7 @@
 
 [[main]]
   name = "Gallery"
-  pageRef = "galery"
+  pageRef = "gallery"
   weight = 20
 
 [[main]]
