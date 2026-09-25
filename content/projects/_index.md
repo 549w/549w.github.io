@@ -9,3 +9,7 @@ cascade:
   groupByYear: false
   showSummary: true
 ---
+
+{{< lead >}}
+做的好玩的东西。
+{{< /lead >}}

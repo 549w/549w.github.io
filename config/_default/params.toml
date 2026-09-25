@@ -17,7 +17,7 @@ enableStyledScrollbar = true # 美化滚动条样式
 
 replyByEmail = false
 
-mainSections = ["posts", "notes", "gallary"]
+mainSections = ["posts", "notes", "gallery"]
 # robots = ""
 
 disableImageOptimization = false
@@ -66,7 +66,7 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
 [homepage]
   layout = "profile" # valid options: page, profile, hero, card, background, custom
   #homepageImage = "IMAGE.jpg" # used in: hero, and card
-  showRecent = true
+  showRecent = false
   showRecentItems = 5
   showMoreLink = false
   showMoreLinkDest = "/short"
