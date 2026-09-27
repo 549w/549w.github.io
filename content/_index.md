@@ -7,15 +7,15 @@ showReadingTime: false
   speed=50
   lifeLike=true
   loop=false
-  tag=h2
+  tag=h1
 >}}
-热忱常在。
+<a href="https://www.meipian.cn/tc1tmj3">热忱常在。</a>
 {{< /typeit >}}
 
 [Posts](/posts/) 经历与想法
 
 [Gallery](/gallery/) 随手拍下的照片
 
-[Notes](/notes/) 学习笔记
+[Notes](/notes/) 学习与阅读笔记
 
-[Projects](/projects/) 做的好玩的东西
+[Projects](/projects/) 好玩的东西！
