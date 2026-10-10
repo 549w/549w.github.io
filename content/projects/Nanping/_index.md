@@ -3,6 +3,7 @@ title: "南评"
 
 weight: 2
 showSummary: true
+showDate: false
 ---
 
 南评是一个浏览器插件，可以把红黑榜中的课程评价渲染到南大选课系统中，避免了反复切换页面检索的麻烦。

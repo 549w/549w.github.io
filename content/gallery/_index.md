@@ -6,6 +6,7 @@ cascade:
   showReadingTime: false
   showAuthor: false
   layout: "gallery"
+  cardView: true
 ---
 
 {{< lead >}}
