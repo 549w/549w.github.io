@@ -78,3 +78,8 @@
   name = "一年一句"
   pageRef = "one-year-one-line"
   weight = 20
+
+[[footer]]
+  name = "RSS"
+  url = "/index.xml"
+  weight = 1
