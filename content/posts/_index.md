@@ -1,5 +1,9 @@
 ---
 title: "Posts"
+
+cascade: 
+    showWordCount: true
+    showReadingTime: true
 ---
 
 {{< lead >}}

@@ -1,7 +1,6 @@
 ---
 title: "休息"
 date: 2026-09-27
-showWordCount: false
 ---
 
 从鼓楼到仙林，地铁通勤需要将近一个小时。
