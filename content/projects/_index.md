@@ -8,6 +8,7 @@ cascade:
   layout: "projects"
   groupByYear: false
   showSummary: true
+  showCards: true
 ---
 
 {{< lead >}}
