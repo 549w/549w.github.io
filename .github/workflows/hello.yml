@@ -23,11 +23,9 @@ jobs:
       - name: Install dependencies
         run: python -m pip install httpx
 
-      - name: Test Yuque script
+      - name: Test Yuque document access
         env:
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
-        run: |
-          pwd
-          ls -la scripts/
-          python -u scripts/test_yuque.py
-          echo "Python exit code: $?"
+          YUQUE_BOOK_NAMESPACE: ${{ secrets.YUQUE_BOOK_NAMESPACE }}
+          YUQUE_ROOT_DOC_SLUG: ${{ secrets.YUQUE_ROOT_DOC_SLUG }}
+        run: python -u scripts/test_yuque.py

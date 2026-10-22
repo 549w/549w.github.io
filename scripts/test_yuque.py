@@ -2,13 +2,9 @@ print("Script started", flush=True)
 
 import os
 import sys
+import httpx
 
 print("Imports completed", flush=True)
-
-import os
-import sys
-
-import httpx
 
 token = os.environ.get("YUQUE_TOKEN")
 
@@ -36,14 +32,17 @@ payload = response.json()
 user = payload.get("data", {})
 
 print("Yuque API authentication succeeded.")
-print(f"User ID: {user.get('id')}")
-print(f"Login: {user.get('login')}")
 
-login = user["login"]
-repos_url = f"https://www.yuque.com/api/v2/users/{login}/repos"
+book_namespace = os.environ["YUQUE_BOOK_NAMESPACE"]
+root_doc_slug = os.environ["YUQUE_ROOT_DOC_SLUG"]
+
+doc_url = (
+    f"https://www.yuque.com/api/v2/repos/"
+    f"{book_namespace}/docs/{root_doc_slug}"
+)
 
 response = httpx.get(
-    repos_url,
+    doc_url,
     headers={
         "X-Auth-Token": token,
         "User-Agent": "Conflux/0.1",
@@ -52,11 +51,9 @@ response = httpx.get(
     timeout=20,
 )
 
-print(f"Repos HTTP status: {response.status_code}", flush=True)
+print(f"Document HTTP status: {response.status_code}", flush=True)
 response.raise_for_status()
 
-repos = response.json().get("data", [])
-print(f"Accessible repositories: {len(repos)}", flush=True)
-
-for repo in repos:
-    print(f"- {repo.get('name')} (namespace={repo.get('namespace')})", flush=True)
+doc = response.json().get("data", {})
+print("Target document retrieved successfully.", flush=True)
+print(f"Body present: {bool(doc.get('body'))}", flush=True)
