@@ -23,7 +23,11 @@ jobs:
       - name: Install dependencies
         run: python -m pip install httpx
 
-      - name: Test Yuque API
+      - name: Debug Yuque script
         env:
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
-        run: python scripts/test_yuque.py
+        run: |
+          pwd
+          ls -la scripts/
+          python -u scripts/test_yuque.py
+          echo "Python exit code: $?"

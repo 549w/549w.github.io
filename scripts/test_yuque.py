@@ -1,3 +1,10 @@
+print("Script started", flush=True)
+
+import os
+import sys
+
+print("Imports completed", flush=True)
+
 import os
 import sys
 
@@ -9,6 +16,8 @@ if not token:
     sys.exit("Missing YUQUE_TOKEN secret")
 
 url = "https://www.yuque.com/api/v2/user"
+
+print("Sending request to Yuque API...", flush=True)
 
 response = httpx.get(
     url,
