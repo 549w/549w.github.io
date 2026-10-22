@@ -39,7 +39,7 @@ book_slug = os.environ["YUQUE_BOOK_SLUG"]
 root_doc_slug = os.environ["YUQUE_ROOT_DOC_SLUG"]
 
 doc_url = (
-    f"{api_host}/api/v2/repos/"
+    f"https://www.yuque.com/api/v2/repos/"
     f"{group_login}/{book_slug}/docs/{root_doc_slug}"
 )
 
