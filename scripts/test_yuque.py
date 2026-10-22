@@ -39,10 +39,11 @@ print("Yuque API authentication succeeded.")
 print(f"User ID: {user.get('id')}")
 print(f"Login: {user.get('login')}")
 
-url = "https://www.yuque.com/api/v2/users/me/repos"
+login = user["login"]
+repos_url = f"https://www.yuque.com/api/v2/users/{login}/repos"
 
 response = httpx.get(
-    url,
+    repos_url,
     headers={
         "X-Auth-Token": token,
         "User-Agent": "Conflux/0.1",
@@ -58,8 +59,4 @@ repos = response.json().get("data", [])
 print(f"Accessible repositories: {len(repos)}", flush=True)
 
 for repo in repos:
-    print(
-        f"- {repo.get('name')} "
-        f"(namespace={repo.get('namespace')}, slug={repo.get('slug')})",
-        flush=True,
-    )
+    print(f"- {repo.get('name')} (namespace={repo.get('namespace')})", flush=True)
