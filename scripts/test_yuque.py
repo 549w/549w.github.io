@@ -33,12 +33,14 @@ user = payload.get("data", {})
 
 print("Yuque API authentication succeeded.")
 
-book_namespace = os.environ["YUQUE_BOOK_NAMESPACE"]
+api_host = os.environ["YUQUE_API_HOST"].rstrip("/")
+group_login = os.environ["YUQUE_GROUP_LOGIN"]
+book_slug = os.environ["YUQUE_BOOK_SLUG"]
 root_doc_slug = os.environ["YUQUE_ROOT_DOC_SLUG"]
 
 doc_url = (
-    f"https://www.yuque.com/api/v2/repos/"
-    f"{book_namespace}/docs/{root_doc_slug}"
+    f"{api_host}/api/v2/repos/"
+    f"{group_login}/{book_slug}/docs/{root_doc_slug}"
 )
 
 response = httpx.get(
@@ -52,7 +54,9 @@ response = httpx.get(
 )
 
 print(f"Document HTTP status: {response.status_code}", flush=True)
-response.raise_for_status()
+if response.status_code != 200:
+    print(f"Yuque API request failed: HTTP {response.status_code}")
+    sys.exit(1)
 
 doc = response.json().get("data", {})
 print("Target document retrieved successfully.", flush=True)

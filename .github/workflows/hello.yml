@@ -26,6 +26,8 @@ jobs:
       - name: Test Yuque document access
         env:
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
-          YUQUE_BOOK_NAMESPACE: ${{ secrets.YUQUE_BOOK_NAMESPACE }}
+          YUQUE_API_HOST: ${{ secrets.YUQUE_API_HOST }}
+          YUQUE_GROUP_LOGIN: ${{ secrets.YUQUE_GROUP_LOGIN }}
+          YUQUE_BOOK_SLUG: ${{ secrets.YUQUE_BOOK_SLUG }}
           YUQUE_ROOT_DOC_SLUG: ${{ secrets.YUQUE_ROOT_DOC_SLUG }}
         run: python -u scripts/test_yuque.py
