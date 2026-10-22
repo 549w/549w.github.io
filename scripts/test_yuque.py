@@ -43,15 +43,23 @@ doc_url = (
     f"{group_login}/{book_slug}/docs/{root_doc_slug}"
 )
 
-response = httpx.get(
-    doc_url,
-    headers={
-        "X-Auth-Token": token,
-        "User-Agent": "Conflux/0.1",
-        "Accept": "application/json",
-    },
-    timeout=20,
-)
+try:
+    response = httpx.get(
+        url,
+        headers={
+            "X-Auth-Token": token,
+            "User-Agent": "Conflux/0.1",
+            "Accept": "application/json",
+        },
+        timeout=20,
+    )
+    print(f"HTTP status: {response.status_code}", flush=True)
+except httpx.TimeoutException:
+    print("Yuque API request timed out.", flush=True)
+    sys.exit(1)
+except httpx.RequestError as exc:
+    print(f"Yuque API network error: {type(exc).__name__}", flush=True)
+    sys.exit(1)
 
 print(f"Document HTTP status: {response.status_code}", flush=True)
 if response.status_code != 200:
