@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: python -m pip install httpx
 
-      - name: Debug Yuque script
+      - name: Test Yuque script
         env:
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
         run: |
