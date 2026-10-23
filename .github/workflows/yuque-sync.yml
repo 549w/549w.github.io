@@ -15,15 +15,16 @@ name: Sync Yuque notes
 #   Variable  YUQUE_AUTHOR_EMAIL       同步提交的 author 邮箱（建议用 GitHub noreply）
 #
 # 说明：
-# - GitHub Actions 的 cron 使用 UTC。"*/5 * * * *" 表示每 5 分钟运行一次，
-#   这是 GitHub 允许的最短间隔；实际触发可能会因平台负载延迟或偶尔跳过。
+# - GitHub Actions 的 cron 使用 UTC。"2-59/5 * * * *" 表示每 5 分钟运行一次
+#   （在 :02、:07、:12… 触发），错开整点高峰；这也是 GitHub 允许的最短间隔。
+#   实际触发仍可能因平台负载延迟或偶尔跳过。
 # - author 使用 YUQUE_AUTHOR_*，committer 固定为 github-actions[bot]。
 # - 定时任务只会在默认分支上触发。
 # - 用默认 GITHUB_TOKEN 推送的提交不会触发 push 类 workflow，
 #   所以提交后显式调用 hugo.yml（workflow_dispatch 是官方允许的例外）。
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "2-59/5 * * * *"
   # 允许在 Actions 页面手动触发，方便调试
   workflow_dispatch:
 
