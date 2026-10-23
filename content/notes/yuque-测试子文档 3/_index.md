@@ -12,5 +12,5 @@ showDate: false
 
 > [!info] 这篇文章同步自外部来源。
 > 方向: [源文档](https://nova.yuque.com/ghxd00/uonpbs/yzvvxbvgth67gkmf) -> GitHub Actions -> GitHub Pages (就是这里!)  
-> 源文档最后更新时间: ```2026-10-22T07:09:36.000Z```  
+> 源文档最后更新时间: ```2026-10-22 15:09:36 +08:00```  
 > 如需了解更多，请联系作者。
