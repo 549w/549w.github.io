@@ -3,3 +3,6 @@ resources/
 .DS_Store
 .favicon-backups/
 content/drafts/
+.env.local
+.venv/
+scripts/debug_*

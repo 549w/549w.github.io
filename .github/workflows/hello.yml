@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   test-yuque:
@@ -26,8 +26,8 @@ jobs:
       - name: Test Yuque document access
         env:
           YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
-          YUQUE_API_HOST: ${{ secrets.YUQUE_API_HOST }}
-          YUQUE_GROUP_LOGIN: ${{ secrets.YUQUE_GROUP_LOGIN }}
-          YUQUE_BOOK_SLUG: ${{ secrets.YUQUE_BOOK_SLUG }}
-          YUQUE_ROOT_DOC_SLUG: ${{ secrets.YUQUE_ROOT_DOC_SLUG }}
+          YUQUE_BASE_URL: ${{ vars.YUQUE_BASE_URL }}
+          YUQUE_GROUP_LOGIN: ${{ vars.YUQUE_GROUP_LOGIN }}
+          YUQUE_BOOK_SLUG: ${{ vars.YUQUE_BOOK_SLUG }}
+          YUQUE_ROOT_SLUG: ${{ vars.YUQUE_ROOT_SLUG }}
         run: python -u scripts/test_yuque.py
