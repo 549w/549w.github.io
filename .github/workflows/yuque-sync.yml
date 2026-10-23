@@ -11,10 +11,13 @@ name: Sync Yuque notes
 #   Variable  YUQUE_BOOK_SLUG
 #   Variable  YUQUE_ROOT_DOC_SLUG
 #   Variable  YUQUE_WORK_PATH          例如 content/notes/，必须是仓库内已存在的目录
+#   Variable  YUQUE_AUTHOR_NAME        同步提交的 author 显示名
+#   Variable  YUQUE_AUTHOR_EMAIL       同步提交的 author 邮箱（建议用 GitHub noreply）
 #
 # 说明：
 # - GitHub Actions 的 cron 使用 UTC。"*/5 * * * *" 表示每 5 分钟运行一次，
 #   这是 GitHub 允许的最短间隔；实际触发可能会因平台负载延迟或偶尔跳过。
+# - author 使用 YUQUE_AUTHOR_*，committer 固定为 github-actions[bot]。
 # - 定时任务只会在默认分支上触发。
 # - 用默认 GITHUB_TOKEN 推送的提交不会触发 push 类 workflow，
 #   所以提交后显式调用 hugo.yml（workflow_dispatch 是官方允许的例外）。
@@ -47,6 +50,8 @@ jobs:
       YUQUE_BOOK_SLUG: ${{ vars.YUQUE_BOOK_SLUG }}
       YUQUE_ROOT_DOC_SLUG: ${{ vars.YUQUE_ROOT_DOC_SLUG }}
       YUQUE_WORK_PATH: ${{ vars.YUQUE_WORK_PATH }}
+      YUQUE_AUTHOR_NAME: ${{ vars.YUQUE_AUTHOR_NAME }}
+      YUQUE_AUTHOR_EMAIL: ${{ vars.YUQUE_AUTHOR_EMAIL }}
 
     steps:
       - name: Checkout
@@ -55,7 +60,9 @@ jobs:
       - name: Validate required configuration
         run: |
           missing=""
-          for name in YUQUE_TOKEN YUQUE_BASE_URL YUQUE_GROUP_LOGIN YUQUE_BOOK_SLUG YUQUE_ROOT_DOC_SLUG YUQUE_WORK_PATH; do
+          for name in \
+            YUQUE_TOKEN YUQUE_BASE_URL YUQUE_GROUP_LOGIN YUQUE_BOOK_SLUG \
+            YUQUE_ROOT_DOC_SLUG YUQUE_WORK_PATH YUQUE_AUTHOR_NAME YUQUE_AUTHOR_EMAIL; do
             if [ -z "${!name}" ]; then
               missing="$missing $name"
             fi
@@ -109,7 +116,10 @@ jobs:
             exit 0
           fi
 
-          git commit -m "content(yuque): sync notes $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (UTC+8)"
+          # author 是文档作者（YUQUE_AUTHOR_*），committer 是执行同步的 bot
+          git commit \
+            --author="$YUQUE_AUTHOR_NAME <$YUQUE_AUTHOR_EMAIL>" \
+            -m "content(yuque): sync notes $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (UTC+8)"
 
           # 运行期间如果有人往当前分支推过东西，先变基再推，降低 push 失败概率
           git pull --rebase origin "${GITHUB_REF_NAME}"
