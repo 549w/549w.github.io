@@ -109,7 +109,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "content(yuque): sync notes $(date -u '+%Y-%m-%d')"
+          git commit -m "content(yuque): sync notes $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (UTC+8)"
 
           # 运行期间如果有人往当前分支推过东西，先变基再推，降低 push 失败概率
           git pull --rebase origin "${GITHUB_REF_NAME}"
