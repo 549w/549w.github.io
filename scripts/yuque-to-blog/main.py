@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 import json
 import os
@@ -7,6 +8,9 @@ import requests
 import shutil
 
 load_dotenv()
+
+# 北京时间固定为 UTC+8，没有夏令时
+BEIJING_TZ = timezone(timedelta(hours=8))
 
 token = os.environ.get("YUQUE_TOKEN")
 
@@ -84,8 +88,16 @@ else:
 def build_front_matter(doc: YuqueDoc, is_leaf: bool) -> str: 
     return f"---\ntitle: {doc.title}\ndescription: {doc.description}\ndate: {doc.first_published_at}\nlastmod: {doc.content_updated_at}\n" + ("showSummary: true\n" if is_leaf else "") + ("" if is_leaf else "showDate: false\n") + "---\n\n"
 
+def format_beijing_time(value: str) -> str:
+    dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    local = dt.astimezone(BEIJING_TZ)
+    offset = local.strftime("%z")
+    return f"{local:%Y-%m-%d %H:%M:%S} {offset[:3]}:{offset[3:]}"
+
 def build_tail(doc: YuqueDoc) -> str:
-    return f"> [!info] 这篇文章同步自外部来源。\n> 方向: [源文档]({base_url}/{group_login}/{book_slug}/{doc.slug}) -> GitHub Actions -> GitHub Pages (就是这里!)  \n> 源文档最后更新时间: ```{doc.content_updated_at}```  \n> 如需了解更多，请联系作者。\n"
+    return f"> [!info] 这篇文章同步自外部来源。\n> 方向: [源文档]({base_url}/{group_login}/{book_slug}/{doc.slug}) -> GitHub Actions -> GitHub Pages (就是这里!)  \n> 源文档最后更新时间: ```{format_beijing_time(doc.content_updated_at)}```  \n> 如需了解更多，请联系作者。\n"
 
 def clear_yuque_files(path: str):
     for item in Path(path).iterdir():
