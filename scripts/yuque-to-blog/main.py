@@ -13,6 +13,7 @@ base_url = os.environ.get("YUQUE_BASE_URL")
 group_login = os.environ.get("YUQUE_GROUP_LOGIN")
 book_slug = os.environ.get("YUQUE_BOOK_SLUG")
 root_doc_slug = os.environ.get("YUQUE_ROOT_DOC_SLUG")
+work_path = os.environ.get("WORK_PATH")
 def yuque_request(url: str):
     
     print(f"Requesting {url}")
@@ -76,4 +77,14 @@ if root_toc_item:
 else:
     print("Root TOC Item not found.")
 
-
+# start from the first child of the root toc item, and build the tree recursively
+def build_toc_tree(toc_item: YuqueTocItem, path: str):
+    Path(f"{path}/{toc_item.title}").mkdir(parents=True, exist_ok=True)
+    if toc_item.sibling_uuid != "":
+        sibling_item: YuqueTocItem | None = next((item for item in toc_items if item.uuid == toc_item.sibling_uuid), None)
+        if sibling_item:
+            build_toc_tree(sibling_item, path)
+    if toc_item.child_uuid != "":
+        child_item: YuqueTocItem | None = next((item for item in toc_items if item.uuid == toc_item.child_uuid), None)
+        if child_item:
+            build_toc_tree(child_item, f"{path}/{toc_item.title}")
