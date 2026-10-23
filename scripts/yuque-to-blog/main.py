@@ -69,7 +69,7 @@ doc_url: str = f"{base_url}/api/v2/repos/{group_login}/{book_slug}/docs/{root_do
 
 root_doc: YuqueDoc = YuqueDoc.model_validate(yuque_request(doc_url))
 
-print(f"Root Document: {root_doc.title} (Slug: {root_doc.slug})")
+# print(f"Root Document: {root_doc.title} (Slug: {root_doc.slug})")
 
 toc_url: str = f"{base_url}/api/v2/repos/{root_doc.book_id}/toc"
 
@@ -81,7 +81,7 @@ toc_items: list[YuqueTocItem] = [YuqueTocItem.model_validate(item) for item in y
 root_toc_item: YuqueTocItem | None = next((item for item in toc_items if item.doc_id == root_doc.id), None)
 
 if root_toc_item:
-    print(f"Root TOC Item: {root_toc_item.title} (Slug: {root_toc_item.slug})")
+    print(f"Root TOC Item found.")
 else:
     print("Root TOC Item not found.")
 
