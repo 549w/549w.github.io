@@ -6,3 +6,5 @@ content/drafts/
 .env.local
 .venv/
 scripts/debug_*
+.vscode/
+.env
