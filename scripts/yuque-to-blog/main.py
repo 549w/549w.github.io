@@ -10,7 +10,7 @@ load_dotenv()
 
 token = os.environ.get("YUQUE_TOKEN")
 
-base_url = os.environ.get("YUQUE_BASE_URL")
+base_url = os.environ.get("YUQUE_BASE_URL", "").strip().rstrip("/")
 group_login = os.environ.get("YUQUE_GROUP_LOGIN")
 book_slug = os.environ.get("YUQUE_BOOK_SLUG")
 root_doc_slug = os.environ.get("YUQUE_ROOT_DOC_SLUG")
@@ -27,14 +27,17 @@ def yuque_request(url: str):
     response = requests.get(url, headers=headers)
     response.raise_for_status()  # Raise an exception for HTTP errors
 
-    if response.status_code == 200:
+    try:
         data = response.json()["data"]
-        print("Data retrieved successfully.")
-        # print(json.dumps(data, indent=2, ensure_ascii=False))
-        return data
-    else:
-        print(f"Failed to retrieve document data. Status code: {response.status_code}")
-        print(response.text)
+    except (ValueError, KeyError, TypeError) as exc:
+        raise RuntimeError(
+            f"Unexpected response from {url}: HTTP {response.status_code}, "
+            f"Content-Type={response.headers.get('Content-Type')!r}, "
+            f"body={response.text[:300]!r}"
+        ) from exc
+
+    print("Data retrieved successfully.")
+    return data
 
 class YuqueDoc(BaseModel):
     id: int
