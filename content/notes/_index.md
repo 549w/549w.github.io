@@ -1,5 +1,8 @@
 ---
 title: "Notes"
+showDate: false
+cascade:
+    showSummary: false
 ---
 
 {{< lead >}}
