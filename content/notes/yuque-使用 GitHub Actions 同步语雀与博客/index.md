@@ -2,7 +2,7 @@
 title: 使用 GitHub Actions 同步语雀与博客
 description: 背景我有基于 Hugo + GitHub Pages 搭建的个人博客；我在语雀的知识库中撰写文档记录学习过程；语雀作为 Markdown 编辑器非常舒服；我希望在语雀写下的内容，能够自动化地（而不是手动复制-&gt;新建-&gt;粘贴-&gt;调整-&gt;commit）同步到博客的「Note」栏目，且保留格式、组织...
 date: 2026-10-22T09:35:26.718Z
-lastmod: 2026-10-22T12:04:52.000Z
+lastmod: 2026-10-23T07:33:28.000Z
 showSummary: true
 ---
 
@@ -79,5 +79,5 @@ jobs:
 
 > [!info] 这篇文章同步自外部来源。
 > 方向: [源文档](https://nova.yuque.com/ghxd00/uonpbs/ef6hq3omok2avufn) -> GitHub Actions -> GitHub Pages (就是这里!)  
-> 源文档最后更新时间: ```2026-10-22 20:04:52 +08:00```  
+> 源文档最后更新时间: ```2026-10-23 15:33:28 +08:00```  
 > 如需了解更多，请联系作者。
