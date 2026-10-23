@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  # 允许被语雀同步工作流（或手动）触发部署
+  workflow_dispatch:
 
 permissions:
   contents: write

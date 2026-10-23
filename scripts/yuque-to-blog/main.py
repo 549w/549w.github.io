@@ -1,4 +1,3 @@
-from datetime import datetime
 from dotenv import load_dotenv
 import json
 import os
@@ -15,7 +14,7 @@ base_url = os.environ.get("YUQUE_BASE_URL")
 group_login = os.environ.get("YUQUE_GROUP_LOGIN")
 book_slug = os.environ.get("YUQUE_BOOK_SLUG")
 root_doc_slug = os.environ.get("YUQUE_ROOT_DOC_SLUG")
-work_path = os.environ.get("WORK_PATH")
+work_path = os.environ.get("YUQUE_WORK_PATH")
 def yuque_request(url: str):
     
     print(f"Requesting {url}")
@@ -83,7 +82,7 @@ def build_front_matter(doc: YuqueDoc, is_leaf: bool) -> str:
     return f"---\ntitle: {doc.title}\ndescription: {doc.description}\ndate: {doc.first_published_at}\nlastmod: {doc.content_updated_at}\n" + ("showSummary: true\n" if is_leaf else "") + ("" if is_leaf else "showDate: false\n") + "---\n\n"
 
 def build_tail(doc: YuqueDoc) -> str:
-    return f"> [!info] 这篇文章同步自外部来源。\n> 方向: [源文档]({base_url}/{group_login}/{book_slug}/{doc.slug}) -> GitHub Actions -> GitHub Pages (就是这里!)  \n> 同步最后一次更新的时间: ```{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}```  \n> 如需了解更多，请联系作者。\n"
+    return f"> [!info] 这篇文章同步自外部来源。\n> 方向: [源文档]({base_url}/{group_login}/{book_slug}/{doc.slug}) -> GitHub Actions -> GitHub Pages (就是这里!)  \n> 源文档最后更新时间: ```{doc.content_updated_at}```  \n> 如需了解更多，请联系作者。\n"
 
 def clear_yuque_files(path: str):
     for item in Path(path).iterdir():

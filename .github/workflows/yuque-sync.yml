@@ -1,0 +1,124 @@
+name: Sync Yuque notes
+
+# 定时运行 scripts/yuque-to-blog/main.py，把语雀文档同步到 YUQUE_WORK_PATH 并提交回仓库。
+# 提交后触发已有的 hugo.yml 完成站点构建与部署；
+# 站点配置、域名（CNAME）等仍然只由 hugo.yml 负责。
+#
+# 必填配置（缺任何一项都会在第一步直接失败）：
+#   Secret    YUQUE_TOKEN
+#   Variable  YUQUE_BASE_URL
+#   Variable  YUQUE_GROUP_LOGIN
+#   Variable  YUQUE_BOOK_SLUG
+#   Variable  YUQUE_ROOT_DOC_SLUG
+#   Variable  YUQUE_WORK_PATH          例如 content/notes/，必须是仓库内已存在的目录
+#
+# 说明：
+# - GitHub Actions 的 cron 使用 UTC。"*/5 * * * *" 表示每 5 分钟运行一次，
+#   这是 GitHub 允许的最短间隔；实际触发可能会因平台负载延迟或偶尔跳过。
+# - 定时任务只会在默认分支上触发。
+# - 用默认 GITHUB_TOKEN 推送的提交不会触发 push 类 workflow，
+#   所以提交后显式调用 hugo.yml（workflow_dispatch 是官方允许的例外）。
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  # 允许在 Actions 页面手动触发，方便调试
+  workflow_dispatch:
+
+permissions:
+  # 提交同步结果需要写权限
+  contents: write
+  # 调用 gh workflow run 触发 hugo.yml 需要
+  actions: write
+
+# 上一次同步没跑完时不要重复启动
+concurrency:
+  group: yuque-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      YUQUE_TOKEN: ${{ secrets.YUQUE_TOKEN }}
+      YUQUE_BASE_URL: ${{ vars.YUQUE_BASE_URL }}
+      YUQUE_GROUP_LOGIN: ${{ vars.YUQUE_GROUP_LOGIN }}
+      YUQUE_BOOK_SLUG: ${{ vars.YUQUE_BOOK_SLUG }}
+      YUQUE_ROOT_DOC_SLUG: ${{ vars.YUQUE_ROOT_DOC_SLUG }}
+      YUQUE_WORK_PATH: ${{ vars.YUQUE_WORK_PATH }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate required configuration
+        run: |
+          missing=""
+          for name in YUQUE_TOKEN YUQUE_BASE_URL YUQUE_GROUP_LOGIN YUQUE_BOOK_SLUG YUQUE_ROOT_DOC_SLUG YUQUE_WORK_PATH; do
+            if [ -z "${!name}" ]; then
+              missing="$missing $name"
+            fi
+          done
+
+          if [ -n "$missing" ]; then
+            echo "::error::缺少必填配置:$missing。YUQUE_TOKEN 配置为 Secret，其余配置为 Variables。"
+            exit 1
+          fi
+
+          if [ ! -d "$YUQUE_WORK_PATH" ]; then
+            echo "::error::YUQUE_WORK_PATH 必须是已存在的目录:$YUQUE_WORK_PATH"
+            exit 1
+          fi
+
+          repo_dir=$(realpath .)
+          work_dir=$(realpath "$YUQUE_WORK_PATH")
+          case "$work_dir/" in
+            "$repo_dir"/*) ;;
+            *)
+              echo "::error::YUQUE_WORK_PATH 必须位于仓库内:$YUQUE_WORK_PATH"
+              exit 1
+              ;;
+          esac
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "python-dotenv" "pydantic>=2" "requests"
+
+      - name: Sync notes from Yuque
+        run: python -u scripts/yuque-to-blog/main.py
+
+      - name: Commit changes
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # -A 连删除的旧 yuque-* 目录一起暂存
+          git add -A -- "$YUQUE_WORK_PATH"
+
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "语雀内容没有变化，跳过提交。"
+            exit 0
+          fi
+
+          git commit -m "content(yuque): sync notes $(date -u '+%Y-%m-%d')"
+
+          # 运行期间如果有人往当前分支推过东西，先变基再推，降低 push 失败概率
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger site deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run hugo.yml --ref "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY"
