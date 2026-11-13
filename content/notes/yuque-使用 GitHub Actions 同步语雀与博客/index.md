@@ -2,7 +2,7 @@
 title: 使用 GitHub Actions 同步语雀与博客
 description: 背景我有基于 Hugo + GitHub Pages 搭建的个人博客；我在语雀的知识库中撰写文档记录学习过程；语雀作为 Markdown 编辑器非常舒服；我希望在语雀写下的内容，能够自动化地（而不是手动复制-&gt;新建-&gt;粘贴-&gt;调整-&gt;commit）同步到博客的「Note」栏目，且保留格式、组织...
 date: 2026-10-22T09:35:26.718Z
-lastmod: 2026-10-24T14:01:44.000Z
+lastmod: 2026-11-13T05:30:21.000Z
 showSummary: true
 ---
 
@@ -179,7 +179,7 @@ def build_toc_tree(toc_item: YuqueTocItem, path: str):
 
 ![标记为 Scheduled 说明是自动触发的](https://cdn.nlark.com/yuque/0/2026/png/58816971/1792849955767-95374a43-1f3f-48e0-a4ee-9abfe2c9e879.png)
 
-解决思路是自己在别的地方挂个脚本，**定时手动触发**这个 workflow。那么我的小破 VPS 显然是不二之选；甚至插着电搁置在宿舍的笔记本也可以胜任。
+解决思路是自己在别的地方挂个脚本，**定时手动触发**这个 workflow。那么我的小破 VPS 显然是不二之选；甚至搁置在宿舍的插着电的笔记本也可以胜任。
 
 （未完待续）
 
@@ -190,5 +190,5 @@ def build_toc_tree(toc_item: YuqueTocItem, path: str):
 
 > [!info] 这篇文章同步自外部来源。
 > 方向: [源文档](https://nova.yuque.com/ghxd00/uonpbs/ef6hq3omok2avufn) -> GitHub Actions -> GitHub Pages (就是这里!)  
-> 源文档最后更新时间: ```2026-10-24 22:01:44 +08:00```  
+> 源文档最后更新时间: ```2026-11-13 13:30:21 +08:00```  
 > 如需了解更多，请联系作者。
