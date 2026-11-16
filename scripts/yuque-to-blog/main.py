@@ -47,12 +47,14 @@ class YuqueDoc(BaseModel):
     id: int
     slug: str
     title: str
-    description: str
+    description: str | None = None
     book_id: int
-    body: str
-    body_html: str
-    first_published_at: str
-    content_updated_at: str
+    body: str | None = None
+    body_html: str | None = None
+    first_published_at: str | None = None
+    content_updated_at: str | None = None
+    created_at: str | None = None
+    status: int | None = None
 
 class YuqueTocItem(BaseModel):
     uuid: str
@@ -86,9 +88,13 @@ else:
     print("Root TOC Item not found.")
 
 def build_front_matter(doc: YuqueDoc, is_leaf: bool) -> str: 
-    return f"---\ntitle: {doc.title}\ndescription: {doc.description}\ndate: {doc.first_published_at}\nlastmod: {doc.content_updated_at}\n" + ("showSummary: true\n" if is_leaf else "") + ("" if is_leaf else "showDate: false\n") + "---\n\n"
+    date_value = doc.first_published_at or doc.content_updated_at or doc.created_at or ""
+    lastmod_value = doc.content_updated_at or doc.created_at or date_value
+    return f"---\ntitle: {doc.title}\ndescription: {doc.description or ''}\ndate: {date_value}\nlastmod: {lastmod_value}\n" + ("showSummary: true\n" if is_leaf else "") + ("" if is_leaf else "showDate: false\n") + "---\n\n"
 
-def format_beijing_time(value: str) -> str:
+def format_beijing_time(value: str | None) -> str:
+    if not value:
+        return "未知"
     dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
@@ -97,7 +103,8 @@ def format_beijing_time(value: str) -> str:
     return f"{local:%Y-%m-%d %H:%M:%S} {offset[:3]}:{offset[3:]}"
 
 def build_tail(doc: YuqueDoc) -> str:
-    return f"> [!info] 这篇文章同步自外部来源。\n> 方向: [源文档]({base_url}/{group_login}/{book_slug}/{doc.slug}) -> GitHub Actions -> GitHub Pages (就是这里!)  \n> 源文档最后更新时间: ```{format_beijing_time(doc.content_updated_at)}```  \n> 如需了解更多，请联系作者。\n"
+    updated_at = doc.content_updated_at or doc.created_at or doc.first_published_at
+    return f"> [!info] 这篇文章同步自外部来源。\n> 方向: [源文档]({base_url}/{group_login}/{book_slug}/{doc.slug}) -> GitHub Actions -> GitHub Pages (就是这里!)  \n> 源文档最后更新时间: ```{format_beijing_time(updated_at)}```  \n> 如需了解更多，请联系作者。\n"
 
 def clear_yuque_files(path: str):
     for item in Path(path).iterdir():
@@ -105,7 +112,6 @@ def clear_yuque_files(path: str):
             print(f"Removing directory: {item}")
             shutil.rmtree(item)
 def build_toc_tree(toc_item: YuqueTocItem, path: str):
-    Path(f"{path}/yuque-{toc_item.title}").mkdir(parents=True, exist_ok=True)
     if toc_item.sibling_uuid != "":
         sibling_item: YuqueTocItem | None = next((item for item in toc_items if item.uuid == toc_item.sibling_uuid), None)
         if sibling_item:
@@ -114,17 +120,25 @@ def build_toc_tree(toc_item: YuqueTocItem, path: str):
     doc_url: str = f"{base_url}/api/v2/repos/{root_doc.book_id}/docs/{toc_item.slug}"
     doc: YuqueDoc = YuqueDoc.model_validate(yuque_request(doc_url))
 
+    # 草稿及其子树不写入仓库，避免把未公开内容同步到公开博客。
+    if doc.status == 0 or doc.first_published_at is None:
+        print(f"Skipping unpublished doc: {doc.title}")
+        return
+
+    doc_dir = Path(path) / f"yuque-{toc_item.title}"
+    doc_dir.mkdir(parents=True, exist_ok=True)
+
     if toc_item.child_uuid != "":
         if toc_item.type == "DOC":
-            with open(f"{path}/yuque-{toc_item.title}/_index.md", "w", encoding="utf-8") as f:
-                f.write(build_front_matter(doc, is_leaf=False) + doc.body + build_tail(doc))
+            with open(doc_dir / "_index.md", "w", encoding="utf-8") as f:
+                f.write(build_front_matter(doc, is_leaf=False) + (doc.body or "") + build_tail(doc))
         child_item: YuqueTocItem | None = next((item for item in toc_items if item.uuid == toc_item.child_uuid), None)
         if child_item:
-            build_toc_tree(child_item, f"{path}/yuque-{toc_item.title}")
+            build_toc_tree(child_item, str(doc_dir))
     else:
         if toc_item.type == "DOC":
-            with open(f"{path}/yuque-{toc_item.title}/index.md", "w", encoding="utf-8") as f:
-                f.write(build_front_matter(doc, is_leaf=True) + doc.body + build_tail(doc))
+            with open(doc_dir / "index.md", "w", encoding="utf-8") as f:
+                f.write(build_front_matter(doc, is_leaf=True) + (doc.body or "") + build_tail(doc))
 
 first_child_item: YuqueTocItem | None = next((item for item in toc_items if item.parent_uuid == root_toc_item.uuid), None)
 
